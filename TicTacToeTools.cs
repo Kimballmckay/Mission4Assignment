@@ -10,10 +10,11 @@ namespace Mission4Assignment
     {
 
         // Receive game board array as input
-        public CheckWinner(char[,] array)
+        public CheckWinner(char[,] array, out bool gameContinue)
         {
             // gameMessage defaults to draw
             string gameMessage = "It's a draw!";
+            bool gameContinue = false;
 
             //Check rows and columns
             for (int i = 0; i < 3; i++)
@@ -25,7 +26,7 @@ namespace Mission4Assignment
                 }
                 if (array[0, i] == array[1, i] && array[1, i] == array[2, i] && !char.IsDigit(array[0, i]))
                 {
-                    gameMessage = $"{array[0, i]} Wins!";
+                    gameMessage = $"{array[0, i]} Wins!";                 
                     break;
                 }
             }
@@ -37,9 +38,11 @@ namespace Mission4Assignment
                 {
                     gameMessage = $"{array[0, 0]} Wins!";
                 }
+
                 if (array[0, 2] == array[1, 1] && array[1, 1] == array[2, 0] && !char.IsDigit(array[0, 2]))
                 {
                     gameMessage = $"{array[0, 2]} Wins!";
+                    
                 }
             }
             
@@ -55,6 +58,7 @@ namespace Mission4Assignment
                         {
                             // Game continues if there are still empty spaces
                             gameMessage = "The game continues...";
+                            gameContinue = true;
                             break;
                         }
                     }
