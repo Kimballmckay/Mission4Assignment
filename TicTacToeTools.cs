@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Mission4Assignment
 {
-    internal class TicTacToeTools
+    public class TicTacToeTools
     {
 
-        public string PrintBoard(char[,] board)
+        public string PrintBoard(string[,] board)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -31,68 +31,62 @@ namespace Mission4Assignment
                 }
             }
 
-        // Receive game board array as input
-        public CheckWinner(char[,] array, out bool gameContinue)
-        {
-            // gameMessage defaults to draw
-            string gameMessage = "It's a draw!";
-            gameContinue = false;
+            return sb.ToString();
+        }
 
-            //Check rows and columns
+        // Receive game board array as input
+        public bool CheckWinner(string[,] array, out string gameMessage)
+        {
+            // Default message is a draw
+            gameMessage = "It's a draw!";
+
+            // Check rows and columns
             for (int i = 0; i < 3; i++)
             {
-                if (array[i, 0] == array[i, 1] && array[i, 1] == array[i, 2] && !char.IsDigit(array[i, 0]))
+                // Check rows
+                if (array[i, 0] == array[i, 1] && array[i, 1] == array[i, 2] && (array[i, 0] == "X" || array[i, 0] == "O"))
                 {
                     gameMessage = $"{array[i, 0]} Wins!";
-                    break;
+                    return false; // Game ends with a win
                 }
-                if (array[0, i] == array[1, i] && array[1, i] == array[2, i] && !char.IsDigit(array[0, i]))
+
+                // Check columns
+                if (array[0, i] == array[1, i] && array[1, i] == array[2, i] && (array[0, i] == "X" || array[0, i] == "O"))
                 {
-                    gameMessage = $"{array[0, i]} Wins!";                 
-                    break;
+                    gameMessage = $"{array[0, i]} Wins!";
+                    return false; // Game ends with a win
                 }
             }
 
-            //Check diagonals
-            if (gameMessage == "It\'s a draw!")
+            // Check diagonals
+            if (array[0, 0] == array[1, 1] && array[1, 1] == array[2, 2] && (array[0, 0] == "X" || array[0, 0] == "O"))
             {
-                if (array[0, 0] == array[1, 1] && array[1, 1] == array[2, 2] && !char.IsDigit(array[0, 0]))
-                {
-                    gameMessage = $"{array[0, 0]} Wins!";
-                }
-
-                if (array[0, 2] == array[1, 1] && array[1, 1] == array[2, 0] && !char.IsDigit(array[0, 2]))
-                {
-                    gameMessage = $"{array[0, 2]} Wins!";
-                    
-                }
+                gameMessage = $"{array[0, 0]} Wins!";
+                return false; // Game ends with a win
             }
-            
 
-            //Check if there are empty boxes
-            if (gameMessage == "It\'s a draw!")
+            if (array[0, 2] == array[1, 1] && array[1, 1] == array[2, 0] && (array[0, 2] == "X" || array[0, 2] == "O"))
             {
-                for (int i = 0; i < 3; ++i) // Iterate through rows
+                gameMessage = $"{array[0, 2]} Wins!";
+                return false; // Game ends with a win
+            }
+
+            // Check if there are any empty spots left
+            for (int i = 0; i < 3; ++i) // Iterate through rows
+            {
+                for (int j = 0; j < 3; ++j) // Iterate through columns
                 {
-                    for (int j = 0; j < 3; ++j) // Iterate through columns
+                    if (array[i, j] != "X" && array[i, j] != "O") // Check for empty spot
                     {
-                        if (char.IsDigit(array[i, j]))
-                        {
-                            // Game continues if there are still empty spaces
-                            gameMessage = "The game continues...";
-                            gameContinue = true;
-                            break;
-                        }
-                    }
-                    if (gameMessage == "The game continues...")
-                    {
-                        break;
+                        gameMessage = "The game continues...";
+                        return true; // Game continues
                     }
                 }
             }
-            
-            // Return message
-            return gameMessage;
+
+            // If there are no empty spots and no winner, it's a draw
+            return false; // No empty spots, game ends in a draw
         }
+
     }
 }
