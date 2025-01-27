@@ -14,7 +14,7 @@ namespace Mission4Assignment
         {
             // gameMessage defaults to draw
             string gameMessage = "It's a draw!";
-            bool gameContinue = false;
+            gameContinue = false;
 
             //Check rows and columns
             for (int i = 0; i < 3; i++)
